@@ -17,7 +17,7 @@ input.is-danger {
 ************ Dropdown Overrides ********
 ****************************************/
 
-
+/*
 .dropdown {
 
 position: relative;
@@ -74,6 +74,8 @@ button.nav-item {
        border-top-color: transparent;
    }
 }
+*/
+
 
 .nav {
    height: 4.5rem;
@@ -81,4 +83,15 @@ button.nav-item {
 
 .nav-item img {
    max-height: 2.8rem;
+}
+
+.navbar-brand .brand-item {
+  margin-rigth: 0px;
+  @include desktop {
+    margin-right: 15px;
+  }
+}
+
+.navbar-burger {
+  border: none;
 }

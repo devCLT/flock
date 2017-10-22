@@ -40,7 +40,7 @@
       </div>
    </div>
    
-   {{$permissions->links()}}
+
 </div>
 
 
