@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-  
+
         /*
          * Application Service Providers...
          */
@@ -175,6 +175,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ObserverServiceProvider::class,
+   
 
         /* 3rd party install */
         Laratrust\LaratrustServiceProvider::class,
@@ -212,7 +214,7 @@ return [
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
-        'Laratrust'   => Laratrust\LaratrustFacade::class,        
+        'Laratrust'   => Laratrust\LaratrustFacade::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
         'Nav' => DevMarketer\EasyNav\EasyNavFacade::class,

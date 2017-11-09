@@ -21,8 +21,9 @@ Route::prefix('manage')->middleware('role:superadministrator|administrator|edito
    Route::get('/', 'ManageController@index')->name('manage.root');      
    Route::get('/dashboard', 'ManageController@dashboard')->name('manage.dashboard');
    Route::resource('/users', 'UsersController');
-   Route::resource('/roles', 'RolesController');
-   Route::resource('/permissions', 'PermissionsController');   
+   Route::resource('/roles', 'RolesController', ['except' => 'destroy']);
+   Route::resource('/posts', 'PostsController');   
+   Route::resource('/permissions', 'PermissionsController', ['except' => 'destroy']);   
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

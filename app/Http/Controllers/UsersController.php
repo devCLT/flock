@@ -29,7 +29,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('manage.users.create');
+         $roles = Role::all();
+        return view('manage.users.create')->withRoles($roles);
     }
 
     /**
@@ -44,7 +45,7 @@ class UsersController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users'
         ]);
-        if ($request->has('password') && !empty($request->password)) 
+        if ($request->has('password') && !empty($request->password))
             {
          $password = trim($request->password);
             }
@@ -62,21 +63,30 @@ class UsersController extends Controller
                 $password = $str;
             }
 
-            
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($password);
         if ($user->save())
         {
-            return redirect()->route('users.show', $user->id);
+           // save the roles for new user
+           if ($request->roles_selected)
+          {
+               $user->syncRoles(explode(',', $request->roles_selected));
+           }
+           else
+           {
+               $user->syncRoles([]);
+           }
+           return redirect()->route('users.show', $user->id);
         }
         else
         {
             Session::flash('danger', 'Sorry a problem occured while creating this user');
-            return redirect()->route('users.create');   
+            return redirect()->route('users.create');
         }
-        
+
 
 
     }
@@ -121,8 +131,8 @@ class UsersController extends Controller
         ]);
 
 
-       
-            
+
+
         $user = User::findOrFail($id);
         $user->name = $request->name;
         $user->email = $request->email;
@@ -142,11 +152,11 @@ class UsersController extends Controller
             }
             elseif ($request->password_options == 'manual')
 
-                    if ($request->has('password') && !empty($request->password)) 
+                    if ($request->has('password') && !empty($request->password))
             {
                 $user->password = Hash::make(trim($request->password));
             }
-            
+
         if ($user->save())
         {
            if ($request->roles_selected)
@@ -162,9 +172,9 @@ class UsersController extends Controller
         else
         {
             Session::flash('danger', 'Sorry a problem occured while creating this user');
-            return redirect()->route('users.edit', $id);   
+            return redirect()->route('users.edit', $id);
         }
-        
+
 
     }
 

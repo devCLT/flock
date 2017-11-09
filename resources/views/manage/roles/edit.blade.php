@@ -77,3 +77,54 @@
 </div> <!-- end of flex container -->
 @endsection
 
+
+@section('scripts')
+<script>
+   alert('ok');
+   var app = new Vue({
+   el: '#app',
+   data: {
+
+         password_options: 'keep',
+         auto_password: true,
+         crudSelected : ['create', 'read', 'update', 'delete'],        
+         permission_options: 'basic',                        
+         resource : '',
+         permissionSelected : [],
+         permissionInit : true,
+         rolesSelected : [],
+         roleInit : true
+
+
+         },
+   methods: {
+      crudName: function(item) {
+         return item.substr(0,1).toUpperCase() + item.substr(1).toLowerCase() + " " + app.resource.substr(0,1) + app.resource.substr(1);
+      },
+      crudSlug: function(item) {
+         return item.toLowerCase() + "-" + app.resource.toLowerCase();
+      },
+      crudDescription: function(item) {
+         return "Alow a user to " + item.toUpperCase() + " a " + app.resource.substr(0,1) + app.resource.substr(1);
+      },
+      popPerm: function(arrItem) {
+         if (this.permissionInit)
+         {
+           this.permissionSelected = arrItem;
+           this.permissionInit = false;
+         }
+         return "ok";
+      },      
+      popRole: function(arrItem) {
+         if (this.roleInit)
+         {
+           this.rolesSelected = arrItem;
+           this.roleInit = false;
+         }
+         return "ok";
+      },      
+
+   }
+});
+   </script>
+@endsection

@@ -11,13 +11,14 @@
   },
   "devDependencies": {
     "axios": "^0.16.2",
+    "buefy": "^0.5.4",
+    "bulma": "^0.6.0",
     "cross-env": "^5.0.1",
     "jquery": "^3.1.1",
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
-    "vue": "^2.1.10",
-    "buefy": "^0.5.4",
-    "bulma": "^0.6.0"
+    "slug": "^0.9.1",
+    "vue": "^2.1.10"
   },
   "dependencies": {
     "font-awesome": "^4.7.0"

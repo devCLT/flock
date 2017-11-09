@@ -31,7 +31,7 @@
                   <td>
                      <a href="{{route('permissions.show', $permission->id)}}" class="button is-outlined m-l-15">View</a>
                      <a href="{{route('permissions.edit', $permission->id)}}" class="button is-outlined m-l-15">Edit</a>
-                     <a href="{{route('permissions.destroy', $permission->id)}}" class="button is-outlined">Delete</a>
+                     {{-- <a href="{{route('permissions.destroy', $permission->id)}}" class="button is-outlined">Delete</a> --}}
                   </td>
                </tr>
                @endforeach
