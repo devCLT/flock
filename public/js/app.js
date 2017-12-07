@@ -19063,7 +19063,6 @@ module.exports = function spread(callback) {
 
 var accordians = document.getElementsByClassName('has-submenu');
 var adminSlideoutButton = document.getElementById('admin-slideout-button');
-
 for (var i = 0; i < accordians.length; i++) {
 
    if (accordians[i].classList.contains('is-active')) {
@@ -19091,11 +19090,12 @@ for (var i = 0; i < accordians.length; i++) {
       }
    };
 }
-
-adminSlideoutButton.onclick = function () {
-   this.classList.toggle('is-active');
-   document.getElementById('admin-side-menu').classList.toggle('is-active');
-};
+if (adminSlideoutButton != null) {
+   adminSlideoutButton.onclick = function () {
+      this.classList.toggle('is-active');
+      document.getElementById('admin-side-menu').classList.toggle('is-active');
+   };
+}
 
 /***/ }),
 /* 34 */
@@ -30127,46 +30127,84 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
    },
    data: function data() {
       return {
-         slug: this.convertTitle(),
          isEditing: false,
          customSlug: '',
-         wasEdited: false
+         wasEdited: false,
+         api_token: this.$root.api_token,
+         slug: this.setSlug(this.title)
       };
    },
    methods: {
-      convertTitle: function convertTitle() {
-         return Slug(this.title);
-      },
       editSlug: function editSlug() {
          this.customSlug = this.slug;
          this.isEditing = true;
       },
       saveSlug: function saveSlug() {
-         // TODO: run ajax to verify unique
-         this.slug = Slug(this.customSlug);
-         if (this.customSlug != this.slug) {
+         if (this.customSlug !== this.slug) {
             this.wasEdited = true;
          }
          this.isEditing = false;
+         this.setSlug(this.customSlug);
       },
       resetSlug: function resetSlug() {
+         this.setSlug(this.title);
          this.wasEdited = false;
-         this.slug = this.convertTitle();
          this.isEditing = false;
+      },
+      setSlug: function setSlug(newVal) {
+         var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+         // Slugify newVal
+         var localSlug = Slug(newVal + (count > 0 ? '-' + count : ''));
+         var vm = this;
+         // test unique
+         if (vm.api_token && localSlug && vm.url) {
+            axios.get(vm.url + '/api/posts/unique', {
+               params: {
+                  api_token: vm.api_token,
+                  slug: localSlug
+               }
+            }).then(function (response) {
+               // if unique set Slugify and emit event
+               if (response.data) {
+                  vm.slug = localSlug;
+                  vm.$emit('slug-changed', localSlug);
+               } else {
+                  vm.setSlug(newVal, count + 1);
+               }
+               // if not the customerize slug and test again
+            }).catch(function (error) {
+               console.log(error);
+            });
+         }
+      },
+      copyToClipboard: function copyToClipboard(val) {
+         var temp = document.createElement('textarea');
+         temp.value = val;
+         document.body.appendChild(temp);
+         temp.select();
+         try {
+            var success = document.execCommand('copy');
+            var rspType = success ? 'success' : 'warning';
+            var msg = success ? 'Copied to Clipboard: $(val)' : 'Copy failed, your browser may not support this feature';
+            this.$emit('copied', rspType, msg, val);
+         } catch (err) {
+            this.$emit('copy-failed', val);
+            console.log('Copy failed, your browser may not support this feature');
+            console.log('Attempted to copy: ', val);
+         }
+         document.body.removeChild(temp);
       }
 
    },
    watch: {
       // using lodash debounce method
-      // TODO: run ajax to verify unique -- if not then customize
       title: _.debounce(function () {
          if (!this.wasEdited) {
-            this.slug = this.convertTitle();
+            this.slug = this.setSlug(this.title);
          }
-      }, 500),
-      slug: function slug(val) {
-         this.$emit('slug-changed', this.slug);
-      }
+      }, 500)
+
    },
    mounted: function mounted() {}
 });

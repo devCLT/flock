@@ -15,7 +15,7 @@
     @yield('styles')
 </head>
 <body>
-    
+
     @include('_includes.nav.main')
     @include('_includes.nav.manage')
 
@@ -26,9 +26,10 @@
     <!-- Scripts -->
 
     <script src="{{ asset('js/app.js') }}">    </script>
-    @yield('scripts')    
+    @include('_includes.notifications.toast')
+    @yield('scripts')
 
-   
+
 
 </body>
 </html>

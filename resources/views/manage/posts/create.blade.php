@@ -16,27 +16,21 @@
       <div class="columns">
          <div class="column is-three-quarter is-desktop">
             <b-field>
-               <b-input type="text" placeholder="Post Title" size="is-large" v-model="title">
+               <b-input type="text" placeholder="Post My Title" size="is-large" name="title" v-model="title">
                </b-input>
             </b-field>
 
             <p>
-               <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" @slug-changed="updateSlug" ></slug-widget>
+               <slug-widget url="{{url('/')}}" subdirectory="blog" :title="title" @copied="slugCopied" @slug-changed="updateSlug" ></slug-widget>
                <input type="hidden" v-model="slug" name="slug">
             </p>
 
             <b-field class="m-t-40">
                <b-input type="textarea"
-                  placeholder="Compose your masterpiece here....." rows="20" name="post_content" id="post_content">
+                  placeholder="Compose your masterpiece here....." rows="20" name="post_content" >
                </b-input>
             </b-field>
 
-            <div class="field">
-               <label for="title" class="label">Title:</label>
-               <p class="control">
-                  <input type="text" class="input" name="title" id="title">
-               </p>
-            </div>
             <div class="field">
                <label for="excerpt" class="label">Excerpt:</label>
                <p class="control">
@@ -100,11 +94,15 @@
    el: '#app',
    data: {
          title: '',
-         slug: ''
+         slug: '',
+         api_token: '{{Auth::user()->api_token}}'
          },
    methods: {
       updateSlug: function(val) {
          this.slug = val;
+      },
+      slugCopied: function(rspType, msg, val) {
+         notifications.toast(msg, {type: 'is-${rspType}'});
       }
    }
 });

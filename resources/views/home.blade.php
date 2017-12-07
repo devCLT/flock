@@ -8,13 +8,10 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+                    {{-- You are logged in! --}}
+                  <pre>
+                    {{-- {{ dd(json_encode(LaraFlash::allByPriority())) }} --}}
+                  </pre>
                 </div>
             </div>
         </div>
